@@ -1,0 +1,32 @@
+export interface Item {
+  Año: string;
+  OSE: string;
+  Partida: string;
+  "Fecha de Registro": string;
+  Columna1: string;
+  "Fecha Propuesta de entrega": string;
+  Lugar: string;
+  Magnitud: string;
+  "Descripción equipo": string;
+  Marca: string;
+  Modelo: string;
+  Alcance: string;
+  Id: string;
+  Vigencia: string;
+  "Tipo de Servicio": string;
+  "No. Certificado": string;
+  "Técnico asignado": string;
+  Estado: string;
+  Vendedor: string;
+  Empresa: string;
+  "Direccción de servicio": string;
+  Contacto: string;
+  Columna2: string;
+  Teléfono: string;
+  Correo: string;
+  Precio: string;
+  Factura: string;
+  "Fecha Factura": string;
+  mes: string;
+  URGENCIA: string;
+}
