@@ -8,15 +8,20 @@
   </head>
   <body>
     <div id="app">
-      <label for="file-input">
-        <h1>Upload a CSV file</h1>
-      </label>
-      <input type="file" name="file-input" id="file-input" />
+      <div class="upload-container">
+        <label for="file-input" class="file-upload-btn">
+          <span class="icon">📂</span> Subir archivo CSV
+        </label>
+        <input type="file" name="file-input" id="file-input" class="hidden-input" />
+      </div>
       <div id="loader" style="display: none">Loading...</div>
+      <div id="no-data-message" class="message-warning">
+        Por favor, sube un archivo CSV para comenzar.
+      </div>
     </div>
 
-    <div>
-      <input type="text" placeholder="Buscar" />
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Buscar" />
     </div>
     <div class="table-container">
       <table class="table">
@@ -25,9 +30,22 @@
       </table>
     </div>
     <div id="pagination">
-      <button id="prev">Previous</button>
-      <span id="page-info">Page 1 of 1</span>
-      <button id="next">Next</button>
+      <button id="fast-prev" class="pagination-btn" title="-10 Páginas">&lt;&lt;</button>
+      <button id="prev" class="pagination-btn">Anterior</button>
+      <div id="page-numbers" class="page-numbers-container"></div>
+      <button id="next" class="pagination-btn">Siguiente</button>
+      <button id="fast-next" class="pagination-btn" title="+10 Páginas">&gt;&gt;</button>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="row-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Detalles del Registro</h2>
+          <span class="close-button">&times;</span>
+        </div>
+        <div id="modal-body"></div>
+      </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
