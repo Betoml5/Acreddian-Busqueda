@@ -133,18 +133,38 @@ function updatePagination(totalItems: number) {
   fastNextBtn.disabled = currentPage > totalPages - 10;
 }
 
+const filterModelo = document.getElementById("filter-modelo") as HTMLInputElement;
+const filterAlcance = document.getElementById("filter-alcance") as HTMLInputElement;
+
 function filterAndDisplay() {
   const term = searchInput.value.toLowerCase();
+  const modeloTerm = filterModelo.value.toLowerCase();
+  const alcanceTerm = filterAlcance.value.toLowerCase();
+
   currentFilteredData = allData.filter((item) => {
-    return Object.values(item as Record<string, any>).some((value) =>
+    // Main search
+    const matchesSearch = Object.values(item as Record<string, any>).some((value) =>
       String(value).toLowerCase().includes(term)
     );
+
+    if (!matchesSearch) return false;
+
+    // Specific filters
+    const modeloValue = getValueForHeader(item, "MODELO").toLowerCase();
+    const alcanceValue = getValueForHeader(item, "ALCANCE").toLowerCase();
+
+    const matchesModelo = !modeloTerm || modeloValue.includes(modeloTerm);
+    const matchesAlcance = !alcanceTerm || alcanceValue.includes(alcanceTerm);
+
+    return matchesModelo && matchesAlcance;
   });
   currentPage = 1;
   displayData(currentFilteredData, currentPage);
 }
 
 searchInput.addEventListener("input", filterAndDisplay);
+filterModelo.addEventListener("input", filterAndDisplay);
+filterAlcance.addEventListener("input", filterAndDisplay);
 
 const modal = document.getElementById("row-modal") as HTMLDivElement;
 const modalBody = document.getElementById("modal-body") as HTMLDivElement;
@@ -251,12 +271,16 @@ const noDataMessage = document.getElementById("no-data-message")!;
 
 // Initial state: disable controls
 searchInput.disabled = true;
+filterModelo.disabled = true;
+filterAlcance.disabled = true;
 prevBtn.disabled = true;
 nextBtn.disabled = true;
 noDataMessage.style.display = "block";
 
 function updateControlsState(hasData: boolean) {
   searchInput.disabled = !hasData;
+  filterModelo.disabled = !hasData;
+  filterAlcance.disabled = !hasData;
   noDataMessage.style.display = hasData ? "none" : "block";
   
   if (!hasData) {

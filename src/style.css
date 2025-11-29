@@ -391,3 +391,27 @@ tbody tr {
 .file-upload-btn .icon {
   font-size: 20px;
 }
+
+/* Specific Filters Styles */
+.filters-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.specific-filter {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+
+.specific-filter:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 2px 5px rgba(74, 144, 226, 0.2);
+}
