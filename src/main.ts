@@ -19,9 +19,19 @@ let currentPage = 1;
 const itemsPerPage = 50;
 let currentFilteredData: any[] = [];
 
+const DISPLAY_HEADERS = [
+  "EMPRESA",
+  "ID",
+  "DESCRIPCION",
+  "MARCA",
+  "MODELO",
+  "ALCANCE",
+  "PRECIO",
+];
+
 function setHeaders(data: any[]) {
   if (data.length > 0) {
-    const headers = Object.keys(data[0] as Record<string, any>);
+    const headers = DISPLAY_HEADERS;
     const thead = document.querySelector("thead")!;
     thead.innerHTML = "";
     const headerRow = document.createElement("tr");
@@ -34,15 +44,36 @@ function setHeaders(data: any[]) {
   }
 }
 
+function getValueForHeader(item: any, header: string): string {
+  // Specific mappings
+  if (header === "DESCRIPCION") {
+    if (item["Descripción equipo"] !== undefined) return item["Descripción equipo"];
+    // Also try case-insensitive for the mapped name
+    const keys = Object.keys(item);
+    const mappedKey = keys.find(k => k.toLowerCase().trim() === "descripción equipo");
+    if (mappedKey && item[mappedKey] !== undefined) return item[mappedKey];
+  }
+
+  const keys = Object.keys(item);
+  // Try exact match first
+  if (item[header] !== undefined) return item[header];
+  
+  // Try case-insensitive match
+  const key = keys.find(k => k.toLowerCase().trim() === header.toLowerCase().trim());
+  if (key && item[key] !== undefined) return item[key];
+  
+  return "";
+}
+
 function displayRows(data: any[]) {
   const tbody = document.querySelector("tbody")!;
   tbody.innerHTML = "";
   data.forEach((item) => {
     const tr = document.createElement("tr");
-    const headers = Object.keys(data[0] as Record<string, any>);
+    const headers = DISPLAY_HEADERS;
     headers.forEach((header) => {
       const td = document.createElement("td");
-      td.textContent = (item as Record<string, any>)[header] || "";
+      td.textContent = getValueForHeader(item, header);
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
@@ -242,8 +273,10 @@ if (savedCsv) {
     header: true,
     skipEmptyLines: true,
   }).data;
+
   allData = data;
   currentFilteredData = data;
+  console.log(data);  
   displayData(data);
   updateControlsState(true);
   loader.style.display = "none";
@@ -266,7 +299,7 @@ fileInput.addEventListener("change", async () => {
   allData = data;
   currentFilteredData = data;
   try {
-    localStorage.setItem("csvText", csv);
+    // localStorage.setItem("csvText", csv);
   } catch (e) {
     console.warn("Data too large to save locally:", e);
   }
